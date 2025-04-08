@@ -164,12 +164,25 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
                 return;
             }
             Console.WriteLine("\n<--------------- Enter Reservation Information --------------->");
+
             Console.Write("Enter Guest Name: ");
             string guestName = Console.ReadLine();
+
             Console.Write("Enter Room Number: ");
             int roomNum = int.Parse(Console.ReadLine());
+
+
+
+
+
             Console.Write("Enter Number of Nights: ");
             int NumNights = int.Parse(Console.ReadLine());
+
+            while (NumNights < 1)
+            {
+                Console.Write("Invalid Number of Nights! Please enter a valid number: ");
+                NumNights = int.Parse(Console.ReadLine());
+            }
 
             DateTime bookingDate = DateTime.Now;
             
@@ -211,7 +224,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
                     if (roomNumbers[i] == roomNum)
                     {
                         double total = (nights[i] * roomRates[i]);
-                        Console.WriteLine($"Room Number: {roomNumbers[i]} , Room Daliy rate: {roomRates[i]} , Room Reservestion: Reserved , By: {guestNames[i]} , Total Cost: {total} \n");
+                        Console.WriteLine($"Guest Name: {guestNames[i]} , Room Number: {roomNumbers[i]} , Room Daliy rate: {roomRates[i]} , Total Cost: {total}   \n");
                     }
                 }
             }
@@ -221,7 +234,16 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
 
 
         static void ViewAllReservations()
-        { }
+        {
+            for (int i =0; i < roomCount; i++)
+            {
+                if(!isReserved[i] == true)
+                {
+                    double total = (nights[i] * roomRates[i]);
+                    Console.WriteLine($"Guest Name: {guestNames[i]} , Room Number: {roomNumbers[i]} , Room Daliy rate: {roomRates[i]} , Total Cost: {total}   \n");
+                }
+            }
+        }
 
 
 
