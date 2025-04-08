@@ -12,7 +12,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
         static int[] nights = new int[MAX_ROOMS];
         static DateTime[] bookingDates = new DateTime[MAX_ROOMS];
         static int roomCount = 0;
-      
+
 
         static void Main(string[] args)
         {
@@ -68,7 +68,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
             {
                 int RoomNum;
                 double DailyRate;
-                
+
 
                 // Check if the array is full
 
@@ -81,8 +81,8 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
                     Console.WriteLine("\n<--------------- Enter Room Information --------------->");
 
                     // Get and validate Room Number
-                        Console.Write("Enter Room Number: ");
-                        RoomNum = int.Parse(Console.ReadLine());
+                    Console.Write("Enter Room Number: ");
+                    RoomNum = int.Parse(Console.ReadLine());
 
 
 
@@ -94,7 +94,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
                             Console.WriteLine("Room Number Already Taken! Try another.");
                             RoomNum = int.Parse(Console.ReadLine());
                         }
-                    }   
+                    }
                     roomNumbers[roomCount] = RoomNum;
 
                     // Get and validate Daily Rate
@@ -110,8 +110,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
                     roomRates[roomCount] = DailyRate;
 
 
-                    // Make Reservation Status available by default
-                   
+                    // Make Reservation available (false) by default
                     isReserved[roomCount] = false;
 
                     Console.WriteLine($"Room Number: {roomNumbers[roomCount]} , Daily Rate: {roomRates[roomCount]} , Reserved: {isReserved[roomCount]}");
@@ -133,10 +132,9 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
 
 
 
-
-
+        /* -------------------------- 2. View all Room  --------------------------*/
         static void ViewAllRooms()
-        { 
+        {
             for (int i = 0; i < roomCount; i++)
             {
                 // Displaying Room Information
@@ -156,8 +154,9 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
 
 
 
+        /* -------------------------- 3. Reserve Room  --------------------------*/
         static void ReserveRoom()
-        { 
+        {
             if (roomCount == 0)
             {
                 Console.WriteLine("No Rooms Available! Please add a room first.");
@@ -166,7 +165,7 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
             Console.WriteLine("\n<--------------- Enter Reservation Information --------------->");
 
             Console.Write("Enter Guest Name: ");
-            string guestName = Console.ReadLine();
+            string guestName = Console.ReadLine().ToLower();
 
             Console.Write("Enter Room Number: ");
             int roomNum = int.Parse(Console.ReadLine());
@@ -185,9 +184,9 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
             }
 
             DateTime bookingDate = DateTime.Now;
-            
-            
-            
+
+
+
             // Check if the room number exists
             bool roomExists = false;
             for (int i = 0; i < roomCount; i++)
@@ -233,11 +232,12 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
 
 
 
+        /* -------------------------- 4. View All Reservations  --------------------------*/
         static void ViewAllReservations()
         {
-            for (int i =0; i < roomCount; i++)
+            for (int i = 0; i < roomCount; i++)
             {
-                if(!isReserved[i] == true)
+                if (!isReserved[i] == true)
                 {
                     double total = (nights[i] * roomRates[i]);
                     Console.WriteLine($"Guest Name: {guestNames[i]} , Room Number: {roomNumbers[i]} , Room Daliy rate: {roomRates[i]} , Total Cost: {total}   \n");
@@ -247,23 +247,80 @@ namespace SimpleHotelRoomManagementProject_CSharpProject2
 
 
 
+        /* -------------------------- 5. Search Reservation By Guest Name  --------------------------*/
         static void SearchReservationByGuestName()
-        { }
+        {
+            for (int i = 0; i < roomCount; i++)
+            {
+                if (guestNames[i].ToLower() == guestNames[i])
+                {
+                    double total = (nights[i] * roomRates[i]);
+                    Console.WriteLine($"Guest Name: {guestNames[i]} , Room Number: {roomNumbers[i]} , Room Daliy rate: {roomRates[i]} , Total Cost: {total}   \n");
+                }
+            }
+        }
 
 
 
+        /* -------------------------- 6. highest Paying Guest  --------------------------*/
         static void highestPayingGuest()
-        { }
+            {
+            double maxCost = 0;
+            string highestGuest = "";
+            for (int i = 0; i < roomCount; i++)
+            {
+                if (isReserved[i] == true)
+                {
+                    double total = (nights[i] * roomRates[i]);
+                    if (total > maxCost)
+                    {
+                        maxCost = total;
+                        highestGuest = guestNames[i];
+                    }
+                }
+            }
+            Console.WriteLine($"Highest Paying Guest: {highestGuest} with a total cost of {maxCost}");
+
+
+        }
 
 
 
+        /* -------------------------- 7. Cancel a Reservation  --------------------------*/
         static void CancelReservation()
-        { }
+            {
+            Console.Write("Enter Room Number to Cancel Reservation: ");
+            int roomNum = int.Parse(Console.ReadLine());
+
+            bool roomFound = false;
+            for (int i = 0; i < roomCount; i++)
+            {
+                if (roomNumbers[i] == roomNum)
+                {
+                    roomFound = true;
+                    if (isReserved[i])
+                    {
+                        isReserved[i] = false;
+                        guestNames[i] = null;
+                        nights[i] = 0;
+                        bookingDates[i] = DateTime.MinValue;
+                        Console.WriteLine($"Reservation for Room {roomNum} has been canceled.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Room is not reserved! No reservation to cancel.");
+                    }
+                }
+            }
+
+
+        }
 
 
 
-    
 
 
+
+        }
     }
-    }
+
